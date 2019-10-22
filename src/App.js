@@ -1,26 +1,59 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import Products from './components/Products/Products';
+import Filter from './components/Filter/Filter';
+// command to run json server
+// json-server public/db.json --port 8000
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+class App extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      products: [],
+      filteredProducts: []
+    }
+  }
+
+  componentDidMount(){
+    this.getDatafromAPI();
+  }
+
+  async getDatafromAPI(){
+    const response = await fetch('http://localhost:8000/products');
+    const myJson = await response.json();
+    this.setState({
+        products: myJson,
+        filteredProducts: myJson
+    })
+  }
+
+  handleAddToCart(id){
+    console.log('Added to cart', id);
+  }
+
+  render () {
+      return(
+        <div className="container">
+      <h1>Shopping Cart Applications</h1>
+      <hr/>
+      <div className="row">
+        <div className="col-md-8">
+          <Filter size={this.state.size} 
+                  sort={this.state.sort}
+                  handleChangeSize= {this.state.handleChangeSize} 
+                  handleChangeSort = {this.state.handleChangeSort}
+                  count = {this.state.filteredProducts.length}
+                  />
+          <Products products={this.state.filteredProducts} 
+                    handleAddToCart={this.handleAddToCart}/>
+        </div>
+        <div className="col-md-4">
+
+        </div>
+      </div>
     </div>
-  );
+      )
+  }
 }
 
 export default App;
