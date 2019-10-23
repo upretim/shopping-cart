@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
 
 export default class Filter extends Component {
+   
     render() {
         return (
             <div className="row"> 
-                <div className="col-md-2">({this.props.count}) Products</div>
-                <div className="col-md-5">
-                    <select>
-                        <option>Sort</option>
-                        <option>One</option>
-                        <option>Two</option>
-                        <option>Three</option>
-                        <option>Four</option>
+                <div className="col-md-4">{this.props.count} products found.</div>
+                <div className="col-md-4">
+                   <label>
+                       Order By
+                   <select className="form-control" value={this.props.sort}
+                           onChange={this.props.handleChangeSort}>
+                        <option value="">Sort</option>
+                        <option value="lowest">Lowest to highest</option>
+                        <option value="highest">Highest to lowest</option>
                     </select>
+                   </label>
                 </div>
-                <div className="col-md-5">
-                  <select>
-                        <option>Size</option>
-                        <option>One</option>
-                        <option>Two</option>
-                        <option>Three</option>
-                        <option>Four</option>
+                <div className="col-md-4">
+                  <label>
+                      Size
+                  <select className="form-control" onChange={this.props.handleChangeSize}
+                          value ={this.props.size}>
+                        <option value="">Size</option>
+                        <option value="X">X</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
                     </select>
+                  </label>
                 </div>            
             </div>
         )

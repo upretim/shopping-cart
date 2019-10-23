@@ -10,7 +10,9 @@ class App extends Component {
     super(props)
     this.state = {
       products: [],
-      filteredProducts: []
+      filteredProducts: [],
+      sort: '',
+      size:''
     }
   }
 
@@ -31,6 +33,49 @@ class App extends Component {
     console.log('Added to cart', id);
   }
 
+  handleChangeSort=(event)=>{
+    this.setState({
+      sort: event.target.value
+    }, this.sortProducts)
+  }
+
+  sortProducts = () => {
+    const { sort, filteredProducts } = this.state;
+    switch (sort) {
+      case 'lowest':
+         filteredProducts.sort((a,b)=> a.price - b.price);     
+        break;
+      case 'highest':
+         filteredProducts.sort((a,b)=> b.price - a.price);
+        break;  
+      default:
+        break;  
+    }
+    this.setState({
+      filteredProducts: filteredProducts
+    })
+  };
+
+  handleChangeSize = (event)=>{
+    this.setState({
+      size:event.target.value
+    }, this.filterProductsBySize)
+  }
+
+  filterProductsBySize = ()=>{
+    const {size, filteredProducts} = this.state;
+    if(size!==""){
+     var filterPro = filteredProducts.filter((item)=>{
+       console.log('found or not ', item.availableSizes.indexOf(size));
+        return item.availableSizes.indexOf(size);
+      });
+      console.log('filtered products by size ', filterPro);
+      this.setState({
+        filteredProducts: filterPro
+      })
+    }
+  }
+
   render () {
       return(
         <div className="container">
@@ -40,8 +85,8 @@ class App extends Component {
         <div className="col-md-8">
           <Filter size={this.state.size} 
                   sort={this.state.sort}
-                  handleChangeSize= {this.state.handleChangeSize} 
-                  handleChangeSort = {this.state.handleChangeSort}
+                  handleChangeSize= {this.handleChangeSize} 
+                  handleChangeSort = {this.handleChangeSort}
                   count = {this.state.filteredProducts.length}
                   />
           <Products products={this.state.filteredProducts} 
